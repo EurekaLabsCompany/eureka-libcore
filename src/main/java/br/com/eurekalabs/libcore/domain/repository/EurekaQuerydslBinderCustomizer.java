@@ -8,6 +8,7 @@ import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.SingleValueBinding;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public interface EurekaQuerydslBinderCustomizer <T extends EntityPath<?>> extends QuerydslBinderCustomizer<T> {
@@ -34,16 +35,18 @@ public interface EurekaQuerydslBinderCustomizer <T extends EntityPath<?>> extend
                 (MultiValueBinding<NumberPath<Short>, Short>) this::getNumberCondition);
 
         querydslBindings.bind(Date.class).all(
-                (MultiValueBinding<DatePath<Date>, Date>) this::getDateCondition);
+                (MultiValueBinding<DatePath<Date>, Date>) this::getTemporalCondition);
+
+        querydslBindings.bind(ZonedDateTime.class).all(
+                (MultiValueBinding<DateTimePath<ZonedDateTime>, ZonedDateTime>) this::getTemporalCondition);
     }
 
-
     @SuppressWarnings({"unchecked", "rawtypes"})
-    default BooleanExpression getDateCondition(final DatePath path, Collection<? extends Date> values) {
+    default BooleanExpression getTemporalCondition(final TemporalExpression path, Collection<? extends Comparable> values) {
         final BooleanExpression expression;
 
         if (values.size() == 2) {
-            final List<? extends Date> dateValues = new ArrayList<>(values);
+            final List<? extends Comparable> dateValues = new ArrayList<>(values);
             Collections.sort(dateValues);
             expression = path.between(dateValues.get(0), dateValues.get(1));
         } else {
