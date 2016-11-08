@@ -15,8 +15,6 @@ repositories {
 dependencies {
     compile group: 'com.querydsl', name: 'querydsl-core', version: '4.1.4'
     compile group: 'org.springframework.data', name: 'spring-data-commons', version: '1.12.4.RELEASE'
-    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.21.0.RELEASE'
-    compile group: 'org.springframework.data', name: 'spring-data-rest-webmvc', version: '2.5.4.RELEASE'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
